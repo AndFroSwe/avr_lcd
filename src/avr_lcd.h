@@ -5,6 +5,13 @@
 
 // Defines
 #define F_CPU 8000000UL
+#define WAIT_TIME 40
+
+// LCD commands
+#define CLR_SCREEN 0x01
+#define FUNC_4BIT 0x28
+#define AUTO_INC_NO_DISP_SH 0x06
+
 
 // Macros
 #define PIN_ON(port, pin) port |= _BV(pin)
@@ -13,20 +20,20 @@
 
 
 // Define pins
-#define RS_PORT PORTB
-#define RS_PIN PB0
-#define EN_PORT PORTB
-#define EN_PIN PB1
-#define RW_PORT PORTB
-#define RW_PIN PB2
-#define DB4_PORT PORTB
-#define DB4_PIN PB3
-#define DB5_PORT PORTB
-#define DB5_PIN PB4
-#define DB6_PORT PORTB
-#define DB6_PIN PB5
-#define DB7_PORT PORTB
-#define DB7_PIN PB6
+#define RS_PORT PORTD
+#define RS_PIN PD4
+#define EN_PORT PORTD
+#define EN_PIN PD5
+#define RW_PORT PORTD
+#define RW_PIN PD6
+#define DB4_PORT PORTD
+#define DB4_PIN PD0
+#define DB5_PORT PORTD
+#define DB5_PIN PD1
+#define DB6_PORT PORTD
+#define DB6_PIN PD2
+#define DB7_PORT PORTD
+#define DB7_PIN PD3
 
 // Includes
 #include <avr/io.h>
@@ -34,5 +41,6 @@
 
 // Function prototypes
 int send_cmd(int cmd);
-int print_char(int c);
+int print_char(char c);
 int send_instr(int i);
+int init_lcd();
