@@ -7,20 +7,14 @@
 
 int main(int argc, char *argv[])
 {
-
-    // Define output pins
-    io_pin RS;
-    RS.port = PORTB;
-    RS.pin = PB0;
-
-    // Set output pins
     DDRB |= _BV(PB0);
-
-    // Enable pin
-    enable_pin(RS);
 
     // Main loop
     while(1)
+    {
+        PIN_TOGGLE(RS_PORT, RS_PIN);
+        _delay_ms(500);
+    }
     
 
     return 0;
