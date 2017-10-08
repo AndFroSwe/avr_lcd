@@ -5,7 +5,7 @@
 
 // Defines
 #define F_CPU 8000000UL
-#define WAIT_TIME 40
+#define CMD_WAIT_TIME 2
 
 // LCD commands
 #define CLR_SCREEN 0x01

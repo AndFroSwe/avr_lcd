@@ -9,10 +9,12 @@ int main(int argc, char *argv[])
 {
     DDRD = 0xFF;
     PORTD = 0x00;
-    _delay_ms(2000); // Wait for everything to settle
+    _delay_ms(15); // Wait for everything to settle
     // Set output pin
 
     init_lcd();
+
+    _delay_ms(1000);
 
     print_char('h');
     print_char('e');
@@ -32,8 +34,8 @@ int main(int argc, char *argv[])
 int send_cmd(int cmd)
 {
     // Send first MS bits, then LS
-    int nibble;
-    int i;
+    int nibble = 0x00;
+    int i = 0;
     for (i = 1;  i >= 0; --i) {
         nibble = cmd >> 4*i;
         // Enable pins
@@ -60,9 +62,9 @@ int send_cmd(int cmd)
 
         // Send message
         PIN_ON(EN_PORT, EN_PIN);
-        _delay_ms(WAIT_TIME);
+        _delay_ms(CMD_WAIT_TIME);
         PIN_OFF(EN_PORT, EN_PIN);
-        _delay_ms(WAIT_TIME);
+        /*_delay_ms(CMD_WAIT_TIME);*/
     }
 
     return 0;
@@ -95,7 +97,10 @@ int send_instr(int i)
 int init_lcd()
 {
     send_instr(0x28);
+    _delay_ms(1);
     send_instr(0x06);
-    send_instr(0x0F);
+    _delay_ms(1);
     send_instr(0x01);
+    _delay_ms(15);
+    send_instr(0x0F);
 }
