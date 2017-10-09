@@ -7,24 +7,30 @@
 
 int main(int argc, char *argv[])
 {
+    const io_pin pd0 = {&PORTD, PD0};
+
     DDRD = 0xFF;
     PORTD = 0x00;
-    _delay_ms(15); // Wait for everything to settle
+    _delay_ms(2000); // Wait for everything to settle
+    /*if(wait_busy()) init_lcd();*/
+    /*wait_busy();*/
     // Set output pin
+    
+    /*init_lcd();*/
 
-    init_lcd();
+    /*_delay_ms(1000);*/
 
-    _delay_ms(1000);
-
-    print_char('h');
-    print_char('e');
-    print_char('l');
-    print_char('l');
-    print_char('o');
+    /*print_char('h');*/
+    /*print_char('e');*/
+    /*print_char('l');*/
+    /*print_char('l');*/
+    /*print_char('o');*/
 
     // Main loop
     while(1)
     {
+        pin_toggle(pd0);
+        _delay_ms(1000);
     }
     
 
@@ -64,7 +70,7 @@ int send_cmd(int cmd)
         PIN_ON(EN_PORT, EN_PIN);
         _delay_ms(CMD_WAIT_TIME);
         PIN_OFF(EN_PORT, EN_PIN);
-        /*_delay_ms(CMD_WAIT_TIME);*/
+        _delay_ms(CMD_WAIT_TIME);
     }
 
     return 0;
@@ -96,11 +102,55 @@ int send_instr(int i)
 
 int init_lcd()
 {
-    send_instr(0x28);
+    send_instr(0x28); // Function set
     _delay_ms(1);
-    send_instr(0x06);
+    send_instr(0x06); // Entry mode
     _delay_ms(1);
-    send_instr(0x01);
+    /*send_instr(0x01); // Clear display*/
     _delay_ms(15);
-    send_instr(0x0F);
+    send_instr(0x0F); // Cursor
+    _delay_ms(1);
+    /*send_instr(0x03); // Return home*/
+
+    return 0;
+}
+
+int wait_busy()
+{
+    // Does not work
+    // Enable read
+    PIN_OFF(RS_PORT, RS_PIN);
+    PIN_ON(RW_PORT, RW_PIN);
+
+    // Read busy flag until lcd is ready
+    DDRD &= ~_BV(DB7_PIN); // Set DB 7 to input
+    PORTD |= _BV(DB7_PIN); // Enable pullup
+    int i = 1;
+    while(i) {
+        PIN_ON(EN_PORT, EN_PIN);
+        _delay_ms(1);
+        i = (PIND >> DB7_PIN) & 0x01;
+        PIN_OFF(EN_PORT, EN_PIN);
+        } // Poll flag
+    DDRD |= _BV(DB7_PIN); // Set to output again
+
+    // Set back to write mode
+    PIN_ON(RS_PORT, RS_PIN);
+
+    return 0;
+}
+
+void pin_on(io_pin p)
+{
+    *p.port |= _BV(p.pin);
+}
+
+void pin_off(io_pin p)
+{
+    *p.port &= ~_BV(p.pin);
+}
+
+void pin_toggle(io_pin p)
+{
+    *p.port ^= _BV(p.pin);
 }

@@ -39,8 +39,20 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+// Typedefs
+// Pin struct
+typedef struct Io_pin {
+    volatile uint8_t *port;
+    int pin;
+} io_pin;
+
 // Function prototypes
 int send_cmd(int cmd);
 int print_char(char c);
 int send_instr(int i);
 int init_lcd();
+int wait_busy();
+void pin_on(io_pin p);
+void pin_off(io_pin p);
+void pin_toggle(io_pin p);
+

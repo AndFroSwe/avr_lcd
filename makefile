@@ -3,7 +3,7 @@
 # Parameters
 CC = avr-gcc
 OPTIMIZE = -O2
-CFLAGS = -g $(OPTIMIZE)
+CFLAGS = -g $(OPTIMIZE) -Wall
 MMCU = atmega328p
 PROGRAMMER = atmelice_isp
 OBJCOPY = avr-objcopy
