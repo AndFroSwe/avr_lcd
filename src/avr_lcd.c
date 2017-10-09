@@ -7,7 +7,24 @@
 
 int main(int argc, char *argv[])
 {
-    const io_pin pd0 = {&PORTD, PD0};
+    // Define pins and a pin array
+    const io_pin rs = {&PORTD, PD0};
+    const io_pin rw = {&PORTD, PD1};
+    const io_pin en = {&PORTD, PD2};
+    const io_pin db4 = {&PORTD, PD3};
+    const io_pin db5 = {&PORTD, PD4};
+    const io_pin db6 = {&PORTD, PD5};
+    const io_pin db7 = {&PORTD, PD6};
+    const io_pin data[]  = {db4, db5, db6, db7};
+
+    // Collect them into struct
+    const lcd_pins lcd = {
+        rs,
+        rw,
+        en,
+        data
+    };
+
 
     DDRD = 0xFF;
     PORTD = 0x00;
@@ -16,7 +33,7 @@ int main(int argc, char *argv[])
     /*wait_busy();*/
     // Set output pin
     
-    /*init_lcd();*/
+    init_lcd(lcd);
 
     /*_delay_ms(1000);*/
 
@@ -29,7 +46,6 @@ int main(int argc, char *argv[])
     // Main loop
     while(1)
     {
-        pin_toggle(pd0);
         _delay_ms(1000);
     }
     
@@ -37,105 +53,74 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int send_cmd(int cmd)
+int send_cmd(int cmd, lcd_pins p)
 {
     // Send first MS bits, then LS
-    int nibble = 0x00;
-    int i = 0;
-    for (i = 1;  i >= 0; --i) {
-        nibble = cmd >> 4*i;
-        // Enable pins
-        if (nibble & 0x01) {
-            PIN_ON(DB4_PORT, DB4_PIN);
-        } else {
-            PIN_OFF(DB4_PORT, DB4_PIN);
-        }
-        if ((nibble >> 1) & 0x01) {
-            PIN_ON(DB5_PORT, DB5_PIN);
-        } else {
-            PIN_OFF(DB5_PORT, DB5_PIN);
-        }
-        if ((nibble >> 2) & 0x01) {
-            PIN_ON(DB6_PORT, DB6_PIN);
-        } else {
-            PIN_OFF(DB6_PORT, DB6_PIN);
-        }
-        if ((nibble >> 3) & 0x01) {
-            PIN_ON(DB7_PORT, DB7_PIN);
-        } else {
-            PIN_OFF(DB7_PORT, DB7_PIN);
+    char nibble = 0x0;
+    int i = 1;
+    while (i >= 0)
+    {
+        nibble = (cmd >> 4*i) & 0x0F; // Shift cmd into nibble
+
+        // Enable correct pins
+        int j = 0;
+        for (j = 0; j < 4; ++j) {
+            if ((nibble >> j) & 0x01) {
+                pin_on(p.data[j]);
+            } else {
+                pin_off(p.data[j]);
+            }
         }
 
-        // Send message
-        PIN_ON(EN_PORT, EN_PIN);
+        // Send command
         _delay_ms(CMD_WAIT_TIME);
-        PIN_OFF(EN_PORT, EN_PIN);
+        pin_on(p.en);
         _delay_ms(CMD_WAIT_TIME);
+        pin_off(p.en);
+        _delay_ms(CMD_WAIT_TIME);
+
+        // Decrement i
+        --i;
     }
 
     return 0;
 }
 
-int print_char(char c)
+int print_char(char c, lcd_pins p)
 {
     // Set to write to DR
-    PIN_ON(RS_PORT, RS_PIN);
-    PIN_OFF(RW_PORT, RW_PIN);
+    pin_on(p.rs);
+    pin_off(p.rw);
     
     // Send command
-    send_cmd(c);
+    send_cmd(c, p);
 
     return 0;
 }
 
-int send_instr(int i)
+int send_instr(int c, lcd_pins p)
 {
     // Set to write to DR
-    PIN_OFF(RS_PORT, RS_PIN);
-    PIN_OFF(RW_PORT, RW_PIN);
-
+    pin_on(p.rs);
+    pin_off(p.rw);
+    
     // Send command
-    send_cmd(i);
+    send_cmd(c, p);
 
     return 0;
 }
 
-int init_lcd()
+int init_lcd(lcd_pins p)
 {
-    send_instr(0x28); // Function set
+    send_instr(0x28, p); // Function set
     _delay_ms(1);
-    send_instr(0x06); // Entry mode
+    send_instr(0x06, p); // Entry mode
     _delay_ms(1);
-    /*send_instr(0x01); // Clear display*/
+    /*send_instr(0x01, p); // Clear display*/
     _delay_ms(15);
-    send_instr(0x0F); // Cursor
+    send_instr(0x0F, p); // Cursor
     _delay_ms(1);
     /*send_instr(0x03); // Return home*/
-
-    return 0;
-}
-
-int wait_busy()
-{
-    // Does not work
-    // Enable read
-    PIN_OFF(RS_PORT, RS_PIN);
-    PIN_ON(RW_PORT, RW_PIN);
-
-    // Read busy flag until lcd is ready
-    DDRD &= ~_BV(DB7_PIN); // Set DB 7 to input
-    PORTD |= _BV(DB7_PIN); // Enable pullup
-    int i = 1;
-    while(i) {
-        PIN_ON(EN_PORT, EN_PIN);
-        _delay_ms(1);
-        i = (PIND >> DB7_PIN) & 0x01;
-        PIN_OFF(EN_PORT, EN_PIN);
-        } // Poll flag
-    DDRD |= _BV(DB7_PIN); // Set to output again
-
-    // Set back to write mode
-    PIN_ON(RS_PORT, RS_PIN);
 
     return 0;
 }

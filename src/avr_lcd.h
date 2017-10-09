@@ -5,7 +5,7 @@
 
 // Defines
 #define F_CPU 8000000UL
-#define CMD_WAIT_TIME 2
+#define CMD_WAIT_TIME 1000
 
 // LCD commands
 #define CLR_SCREEN 0x01
@@ -46,12 +46,18 @@ typedef struct Io_pin {
     int pin;
 } io_pin;
 
+typedef struct Lcd_pins {
+    io_pin rs;
+    io_pin rw;
+    io_pin en;
+    const io_pin *data;
+} lcd_pins;
+
 // Function prototypes
-int send_cmd(int cmd);
-int print_char(char c);
-int send_instr(int i);
+int send_cmd(int cmd, lcd_pins p);
+int print_char(char c, lcd_pins p);
+int send_instr(int i, lcd_pins p);
 int init_lcd();
-int wait_busy();
 void pin_on(io_pin p);
 void pin_off(io_pin p);
 void pin_toggle(io_pin p);
