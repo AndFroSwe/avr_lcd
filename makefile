@@ -17,6 +17,7 @@ all: obj/avr_lcd.elf build/avr_lcd.hex
 flash:
 	avrdude -p $(PART) -c $(PROGRAMMER) -U flash:w:build/avr_lcd.hex
 
+
 # Create hex file
 build/avr_lcd.hex: obj/avr_lcd.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
