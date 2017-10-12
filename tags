@@ -1,0 +1,37 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AUTO_INC_NO_DISP_SH	src/avr_lcd.h	13;"	d
+CC	makefile	/^CC = avr-gcc$/;"	m
+CFLAGS	makefile	/^CFLAGS = -g $(OPTIMIZE) -Wall$/;"	m
+CLR_SCREEN	src/avr_lcd.h	11;"	d
+CMD_WAIT_TIME	src/avr_lcd.h	8;"	d
+FUNC_4BIT	src/avr_lcd.h	12;"	d
+F_CPU	src/avr_lcd.h	7;"	d
+Io_pin	src/avr_lcd.h	/^typedef struct Io_pin {$/;"	s
+Lcd_pins	src/avr_lcd.h	/^typedef struct Lcd_pins {$/;"	s
+MAIN	makefile	/^MAIN = avr_lcd$/;"	m
+MMCU	makefile	/^MMCU = atmega328p$/;"	m
+OBJCOPY	makefile	/^OBJCOPY = avr-objcopy$/;"	m
+OPTIMIZE	makefile	/^OPTIMIZE = -O2$/;"	m
+PART	makefile	/^PART = m328p$/;"	m
+PROGRAMMER	makefile	/^PROGRAMMER = atmelice_isp$/;"	m
+data	src/avr_lcd.h	/^    const io_pin *data;$/;"	m	struct:Lcd_pins
+en	src/avr_lcd.h	/^    io_pin en;$/;"	m	struct:Lcd_pins
+init_lcd	src/avr_lcd.c	/^int init_lcd(lcd_pins p)$/;"	f
+io_pin	src/avr_lcd.h	/^} io_pin;$/;"	t	typeref:struct:Io_pin
+lcd_pins	src/avr_lcd.h	/^} lcd_pins;$/;"	t	typeref:struct:Lcd_pins
+main	src/avr_lcd.c	/^int main(int argc, char *argv[])$/;"	f
+pin	src/avr_lcd.h	/^    int pin;$/;"	m	struct:Io_pin
+pin_off	src/avr_lcd.c	/^void pin_off(io_pin p)$/;"	f
+pin_on	src/avr_lcd.c	/^void pin_on(io_pin p)$/;"	f
+pin_toggle	src/avr_lcd.c	/^void pin_toggle(io_pin p)$/;"	f
+port	src/avr_lcd.h	/^    volatile uint8_t *port;$/;"	m	struct:Io_pin
+print_char	src/avr_lcd.c	/^int print_char(char c, lcd_pins p)$/;"	f
+rs	src/avr_lcd.h	/^    io_pin rs;$/;"	m	struct:Lcd_pins
+rw	src/avr_lcd.h	/^    io_pin rw;$/;"	m	struct:Lcd_pins
+send_cmd	src/avr_lcd.c	/^int send_cmd(int cmd, lcd_pins p)$/;"	f
+send_instr	src/avr_lcd.c	/^int send_instr(int c, lcd_pins p)$/;"	f

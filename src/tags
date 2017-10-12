@@ -1,0 +1,41 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AUTO_INC_NO_DISP_SH	avr_lcd.h	13;"	d
+CLR_SCREEN	avr_lcd.h	11;"	d
+CMD_WAIT_TIME	avr_lcd.h	8;"	d
+DB4_PIN	avr_lcd.h	30;"	d
+DB4_PORT	avr_lcd.h	29;"	d
+DB5_PIN	avr_lcd.h	32;"	d
+DB5_PORT	avr_lcd.h	31;"	d
+DB6_PIN	avr_lcd.h	34;"	d
+DB6_PORT	avr_lcd.h	33;"	d
+DB7_PIN	avr_lcd.h	36;"	d
+DB7_PORT	avr_lcd.h	35;"	d
+EN_PIN	avr_lcd.h	26;"	d
+EN_PORT	avr_lcd.h	25;"	d
+FUNC_4BIT	avr_lcd.h	12;"	d
+F_CPU	avr_lcd.h	7;"	d
+Io_pin	avr_lcd.h	/^typedef struct Io_pin {$/;"	s
+PIN_OFF	avr_lcd.h	18;"	d
+PIN_ON	avr_lcd.h	17;"	d
+PIN_TOGGLE	avr_lcd.h	19;"	d
+RS_PIN	avr_lcd.h	24;"	d
+RS_PORT	avr_lcd.h	23;"	d
+RW_PIN	avr_lcd.h	28;"	d
+RW_PORT	avr_lcd.h	27;"	d
+init_lcd	avr_lcd.c	/^int init_lcd()$/;"	f
+io_pin	avr_lcd.h	/^} io_pin;$/;"	t	typeref:struct:Io_pin
+main	avr_lcd.c	/^int main(int argc, char *argv[])$/;"	f
+pin	avr_lcd.h	/^    int pin;$/;"	m	struct:Io_pin
+pin_off	avr_lcd.c	/^void pin_off(io_pin p)$/;"	f
+pin_on	avr_lcd.c	/^void pin_on(io_pin p)$/;"	f
+pin_toggle	avr_lcd.c	/^void pin_toggle(io_pin p)$/;"	f
+port	avr_lcd.h	/^    volatile uint8_t *port;$/;"	m	struct:Io_pin
+print_char	avr_lcd.c	/^int print_char(char c)$/;"	f
+send_cmd	avr_lcd.c	/^int send_cmd(int cmd)$/;"	f
+send_instr	avr_lcd.c	/^int send_instr(int i)$/;"	f
+wait_busy	avr_lcd.c	/^int wait_busy()$/;"	f
